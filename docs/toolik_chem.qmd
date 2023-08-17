@@ -1,0 +1,101 @@
+
+
+    Download the CSV containing the Toolik biogeochemistry data
+
+    Take a look at it - how are missing values stored? Keep that in mind.
+
+    Drop the CSV into your data folder of your project
+
+    Create a new Quarto document, save in docs as toolik_chem.qmd
+
+    Attach the tidyverse, here, and janitor packages in your setup code chunk
+
+    Read in the data as toolik_biochem. Remember, you’ll want to specify here how NA values are stored. Pipe directly into janitor::clean_names() following your import code to get all column names into lower snake case.
+
+    Create a subset of the data that contains only observations from the “Toolik Inlet” site, and that only contains the variables (columns) for pH, dissolved organic carbon (DOC), and total dissolved nitrogen (TDN) (hint: see dplyr::select()). Store this subset as inlet_biochem. Make sure to look at the subset you’ve created.
+
+    Find the mean value of each column in inlet_biochem 3 different ways:
+
+    Write a for loop from scratch to calculate the mean for each
+    Use one other method (e.g. apply, across, or purrr::map_df) to find the mean for each column.
+
+# code start
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+```{r}
+toolik_biochem <- read_csv(here("data", "2011_Kling_Akchem.csv")) %>% janitor::clean_names()
+```
+
+Create a subset of the data that contains only observations from the “Toolik Inlet” site, and that only contains the variables (columns) for pH, dissolved organic carbon (DOC), and total dissolved nitrogen (TDN) (hint: see dplyr::select()). Store this subset as inlet_biochem. Make sure to look at the subset you’ve created.
+
+```{r}
+inlet_biochem <- toolik_biochem %>% 
+  filter(site == "Toolik Inlet") %>% 
+  select(p_h, doc_u_m, tdn_u_m) %>% 
+  mutate(p_h = as.numeric(p_h), 
+         doc_u_m = as.numeric(doc_u_m), 
+         tdn_u_m = as.numeric(tdn_u_m))
+
+```
+
+ Find the mean value of each column in inlet_biochem 3 different ways:
+
+    Write a for loop from scratch to calculate the mean for each
+    Use one other method (e.g. apply, across, or purrr::map_df) to find the mean for each column.
+
+## Way 1
+```{r}
+mean(inlet_biochem$p_h, na.rm = TRUE)
+mean(inlet_biochem$doc_u_m, na.rm = TRUE)
+mean(inlet_biochem$tdn_u_m, na.rm = TRUE)
+```
+
+## Way 2
+```{r}
+for (i in seq_along(inlet_biochem)) {
+  if(is.numeric(inlet_biochem[[i]])) {
+    mean_inlet <- mean(inlet_biochem[[i]], na.rm = TRUE)
+    print(mean_inlet)
+  }
+}
+#review this code
+```
+
+## Way 3
+```{r}
+apply(inlet_biochem, 2, mean, simplify = TRUE)
+
+
+inlet_biochem %>% 
+  group_by(p_h, doc_u_m, tdn_u_m) %>%
+  summarise(mean_p_h_ = mean(p_h, na.rm = TRUE),
+            mean_doc_u_m = mean(doc_u_m, na.rm = TRUE), 
+            mean_tdn_u_m = mean(tdn_u_m, na.rm =  TRUE))
+
+inlet_biochem %>% 
+  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+
+
+
+# inlet_biochem %>% 
+#   group_by(site) %>% 
+#   summarize(across(where(is.numeric), mean, na.rm = TRUE))
+#does not work since it is only one group
+```
+
+
+
+
+
+
+
+
+
+
+
+

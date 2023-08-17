@@ -12,7 +12,7 @@ library(tidyverse)
 
 ### Task 1
 ```{r}
-pm2_5 <- 48
+pm2_5 <- 421
 
 if(pm2_5 < 100) {
   print("Low to moderate risk")
@@ -26,7 +26,7 @@ if(pm2_5 < 100) {
 -   Store the string “blue whale” as an object called species. Write an if statement that returns “You found a whale!” if the string “whale” is detected in species, otherwise return nothing. Test by changing the species string & re-running to see output.
 
 ```{r}
-species <- "blue whale"
+species <- "simba"
 
 if (species == "blue whale") {
   print ("You found a whale!")
@@ -49,14 +49,14 @@ main_ingredient <- "veggie"
 
 #str_detect(main_ingredient, "veggie", "chicken", "steak")
 
-if (str_detect(main_ingredient,"veggie")) {
-  print(base_burrito)
-} else if (str_detect(main_ingredient, "chicken")) {
-  print(base_burrito + 3)
-} else if (str_detect(main_ingredient, "steak")) {
-  print(base_burrito + 3.25)
-
-}
+# if (str_detect(main_ingredient,"veggie")) {
+#   print(base_burrito)
+# } else if (str_detect(main_ingredient, "chicken")) {
+#   print(base_burrito + 3)
+# } else if (str_detect(main_ingredient, "steak")) {
+#   print(base_burrito + 3.25)
+# 
+# }
 # if (main_ingredient == "veggie") {
 #   print(base_burrito)
 # } else if (main_ingredient == "chicken") {
@@ -64,10 +64,10 @@ if (str_detect(main_ingredient,"veggie")) {
 # } else if (main_ingredient == "steak") {
 #   print(base_burrito + 3.25)
 
-# switch(main_ingredient,
-#        "veggie" = print(base_burrito),
-#        "chicken" = print(base_burrito +3),
-#        "steak" = print(base_burrito +3.25))
+switch(main_ingredient,
+       "veggie" = print(base_burrito),
+       "chicken" = print(base_burrito +3),
+       "steak" = print(base_burrito +3.25))
 
 ```
  Task 4
@@ -78,7 +78,7 @@ Create a new vector called fish that contains the values 8, 10, 12, 23 represent
 fish <-  c("goldfish" = 8, "tetras" = 10, "guppies" = 12, "mollies" = 23)
 
 for (i in seq_along(fish)){
-    proportion_fish <- fish[i] / sum(fish)
+    proportion_fish <- (fish[i] / sum(fish)) *100
       print(proportion_fish)
 }
 ```
